@@ -34,6 +34,16 @@ impl Color {
      * https://doc.rust-lang.org/std/primitive.u8.html
      */
     pub fn cross(c1: &Color, c2: &Color) -> Color {
-        unimplemented!();
+        Color::new(Self::safe_add(&c1.r, &c2.r), Self::safe_add(&c1.g, &c2.g), Self::safe_add(&c1.b, &c2.b))
+        // Color::new((c1.r + c2.r) modulo 256, (c1.g + c2.g) modulo 256, (c1.g + c2.g) modulo 256)
+    }
+
+    pub fn safe_add(x: &u8, y: &u8) -> u8 {
+        let mut res = 0;
+        match x.checked_add(*y) {
+            Some(x) => res = x,
+            None => res = y - (255 - x) - 1
+        }
+        res
     }
 }

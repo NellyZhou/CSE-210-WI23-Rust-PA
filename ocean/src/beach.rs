@@ -6,18 +6,20 @@ use std::slice::Iter;
 #[derive(Debug)]
 pub struct Beach {
     // TODO: Declare the fields of the Beach struct here.
+    crabs: Vec<Crab>
 }
 
 impl Beach {
     pub fn new() -> Beach {
-        unimplemented!();
+        let mut crabs = Vec::new();
+        Beach {crabs: crabs}
     }
 
     /**
      * Returns the number of crabs on the beach.
      */
     pub fn size(&self) -> usize {
-        unimplemented!();
+        self.crabs.len()
     }
 
     /**
@@ -28,15 +30,15 @@ impl Beach {
      *     - The newly added crab should be at the END of the collection.
      */
     pub fn add_crab(&mut self, crab: Crab) {
-        unimplemented!();
+        self.crabs.push(crab)
     }
 
     pub fn get_crab(&self, index: usize) -> &Crab {
-        unimplemented!();
+        &self.crabs[index]
     }
 
     pub fn crabs(&self) -> Iter<Crab> {
-        unimplemented!();
+        self.crabs.iter()
     }
 
     /**
@@ -45,14 +47,30 @@ impl Beach {
      *   - Some of a reference to the Crab with the highest speed.
      */
     pub fn get_fastest_crab(&self) -> Option<&Crab> {
-        unimplemented!();
+        if self.size()== 0 {
+            Option::None
+        } else  {
+            let mut fast_crab = &self.crabs[0];
+            for i in self.crabs() {
+                if i.speed() > fast_crab.speed() {
+                    fast_crab = i
+                }
+            }
+            Option::Some(fast_crab)
+        }
     }
 
     /**
      * Returns a vector of references to the crabs with a given name.
      */
     pub fn find_crabs_by_name(&self, name: &str) -> Vec<&Crab> {
-        unimplemented!();
+        let mut certain_crabs = Vec::new();
+        for crab in self.crabs() {
+            if crab.name() == name {
+                certain_crabs.push(crab);
+            }
+        }
+        certain_crabs
     }
 
     /**
@@ -61,6 +79,9 @@ impl Beach {
      * the method should panic.
      */
     pub fn breed_crabs(&mut self, i: usize, j: usize, name: String) {
-        unimplemented!();
+        let mom = self.get_crab(i);
+        let pap = self.get_crab(j);
+        let new_crab = Crab::new(name, 1, Color::cross(mom.color(), pap.color()), Diet::random_diet());
+        self.add_crab(new_crab)
     }
 }
